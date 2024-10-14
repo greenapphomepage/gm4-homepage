@@ -1,34 +1,50 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+name: CI/CD Pipeline Web Homepage
 
-name: Deploy CI/CD
+env:
+  PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+  HOST_NAME: ${{secrets.SSH_HOST_NAME}}
+  USER_NAME: ${{secrets.SSH_USER}}
 
 on:
   push:
-    branches: ["main"]
+    branches: [main]
 
 jobs:
-  build:
-    runs-on: self-hosted
-
+  # Build Image
+  build-and-push-image:
     strategy:
       matrix:
-        node-version: [20.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
+        node-version: [20]
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Login to Docker Hub
+        run: sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and push Docker image
+        run: |
+          sudo docker build -t greenapps/homepage:latest -f Dockerfile .
+          sudo docker push greenapps/homepage:latest
+          echo "Compile complete."
 
-      - run: npm ci
-      - run: |
-          touch .env
-          echo "${{secrets.NEXT_ENV_FILE}}" > .env
-      - run: |
-          npm run build --if-present
-          npm i -g pm2
-          pm2 restart "${{secrets.APP_NAME}}"
+  # Deploy to server
+  deploy-to-server:
+    needs: [ build-and-push-image ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Repository
+        uses: actions/checkout@v3
+
+      - name: Deploy to EC2
+        run: |
+          echo "Starting deploy"
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOST_NAME} '
+            cd gm4-homepage &&
+            git pull origin main &&
+            docker pull greenapps/homepage:latest &&
+            docker-compose down &&
+            docker-compose up -d &&
+            docker image prune -f
+          '
+          echo "Deploy Successful"

@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  # Web
+  gm4-web:
+    image: greenapps/homepage:latest
+    container_name: gm4-web
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '5'
+        max-size: '10m'
+    ports:
+      - '3001:3000'
+    # volumes:
+    #   - '.:/app'
+    restart: always
+    networks:
+      - gm4_network
+networks:
+  gm4_network:
+    driver: bridge
