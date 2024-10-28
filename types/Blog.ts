@@ -1,6 +1,18 @@
+import {Category} from "@/types/Category";
+import {HashTag} from "@/types/Hashtag";
+
 export interface Blog {
-  title: string;
-  description: string;
-  image: string;
-  category: string;
+  id: number
+  title: string
+  slug: string
+  thumbnail: string
+  content: string
+  description: string
+  keywords: string
+  order: string
+  created_at: string
+  updated_at: string
+  deleted_at: any
+  category: Category
+  hashTags: HashTag[]
 }

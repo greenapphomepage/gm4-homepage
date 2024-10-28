@@ -23,7 +23,7 @@ import { useRouter } from "next/navigation";
 import { Blog } from "@/types/Blog";
 
 const CustomCard = motion(Card);
-const CardBlog = ({ title, description, image, category }: Blog) => {
+const CardBlog = ({ title, description, thumbnail, category ,id , slug }: Blog) => {
   const router = useRouter();
   const {
     handleMouseMove,
@@ -45,6 +45,7 @@ const CardBlog = ({ title, description, image, category }: Blog) => {
         rotateX,
         transformStyle: "preserve-3d",
       }}
+      onClick={() => router.push(`/blog/${slug}`)}
     >
       <motion.div
         className="pointer-events-none absolute -inset-px opacity-0 rounded-xl transition duration-300 group-hover:opacity-30"
@@ -61,15 +62,15 @@ const CardBlog = ({ title, description, image, category }: Blog) => {
       />
       <CardHeader className="pt-4 px-4 pb-8 gap-2">
         <Image
-          src={image}
-          alt={image}
+          src={thumbnail}
+          alt={thumbnail}
           width={0}
           height={0}
           sizes="100vw"
           className="h-[240px] w-full object-cover rounded-xl"
         />
         <CardTitle className="font-medium text-base bg-title bg-clip-text text-transparent">
-          {category}
+          {category?.name}
         </CardTitle>
         <CardDescription className="font-bold text-base leading-[18px] bg-title bg-clip-text text-transparent">
           {title}

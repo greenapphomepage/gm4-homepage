@@ -17,7 +17,7 @@ const SiteFooter = () => {
     <section>
       <div className="relative h-[400px] w-full lg:px-[80px] px-4 xl:px-24">
         <Image
-          src="images/bg-footer.svg"
+          src="/images/bg-footer.svg"
           alt=""
           fill
           className="z-0 object-cover"
