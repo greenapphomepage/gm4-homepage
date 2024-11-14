@@ -28,3 +28,19 @@ export async function fetcher<JSON = any>(
 
   return res.json();
 }
+
+export function formatTime(date: Date): string {
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+
+  if (diffHours < 24) {
+    return `${diffHours}시간 전`;
+  } else {
+    return date.toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  }
+}
