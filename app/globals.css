@@ -3,44 +3,58 @@
 @tailwind utilities;
 
 @layer base {
-:root {
-    --primary: #010A18;
-}
+  :root {
+    --primary: #010a18;
+  }
 }
 
 @layer base {
-    body {
-        @apply bg-primary text-white text-base;
-        overflow-x: hidden;
-    }
+  body {
+    @apply bg-primary text-white text-base;
+    overflow-x: hidden;
+  }
 }
 .bg-input-gradient {
-    background: radial-gradient(89.06% 89.06% at 25% 74.32%, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.00) 48.41%), linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.04) 100%), #010718
+  background: radial-gradient(
+      89.06% 89.06% at 25% 74.32%,
+      rgba(255, 255, 255, 0.04) 0%,
+      rgba(255, 255, 255, 0) 48.41%
+    ),
+    linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.04) 0%,
+      rgba(255, 255, 255, 0.04) 100%
+    ),
+    #010718;
 }
 .custom-cursor {
-    cursor: url('../public/icons/Pointing.svg'), pointer;
+  cursor: url('../public/icons/Pointing.svg'), pointer;
 }
 .truncate-text {
-    display:-webkit-box;
-    -webkit-line-clamp:5;
-    -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
 }
 /* width */
 ::-webkit-scrollbar {
-    width: 12px;
+  width: 12px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-    border-radius: 100vh;
-    background: #1f2937;
+  border-radius: 100vh;
+  background: #1f2937;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    border-radius: 100vh;
-    background: linear-gradient(to right, #4b6cb7 0%, #182848 51%, #4b6cb7 100%);
+  border-radius: 100vh;
+  background: linear-gradient(to right, #4b6cb7 0%, #182848 51%, #4b6cb7 100%);
 }
 ::-webkit-scrollbar-thumb:hover {
-    background-position: right center;
+  background-position: right center;
+}
+
+pre {
+  overflow: auto;
 }

@@ -2,6 +2,7 @@ import useLinearCard from '@/lib/linear-card'
 import useBlog from '@/lib/use-blog'
 import {motion, useMotionTemplate} from 'framer-motion'
 import CardBlogV2 from './card-blog-v2'
+import {useRouter} from 'next/navigation'
 
 interface SidebarProps {
   id: number
@@ -17,6 +18,7 @@ export default function Sidebar({id}: SidebarProps) {
     cursorX,
   } = useLinearCard()
   const {resBlog} = useBlog()
+  const router = useRouter()
 
   return (
     <motion.div
@@ -39,7 +41,12 @@ export default function Sidebar({id}: SidebarProps) {
       />
       <div className='flex justify-between items-center text-white mb-4 p-4'>
         <h2 className='text-[22px] font-semibold'>추천 기사</h2>
-        <p className='xl:text-base text-sm bg-blue-gradient text-transparent bg-clip-text font-bold flex items-center transition-all cursor-pointer'>
+        <p
+          className='xl:text-base text-sm bg-blue-gradient text-transparent bg-clip-text font-bold flex items-center transition-all cursor-pointer'
+          onClick={() => {
+            router.push('/blog')
+          }}
+        >
           VIEW ALL{' '}
           <svg
             xmlns='http://www.w3.org/2000/svg'
